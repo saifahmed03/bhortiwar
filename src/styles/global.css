@@ -1,0 +1,267 @@
+/* =========================
+   Base Dark Theme
+========================= */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0E0E14; /* Deep Dark Base */
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(79, 156, 255, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(255, 79, 212, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(100, 50, 200, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(0, 230, 118, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 20% 90%, rgba(255, 215, 0, 0.1) 0%, transparent 40%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  color: #E0E0E0;
+  min-height: 100vh;
+}
+
+/* =========================
+   Links & Buttons
+========================= */
+a, button {
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* =========================
+   Accent Colors
+========================= */
+.primary-accent { color: #FF4FD2; } /* Magenta */
+.secondary-accent { color: #4F9CFF; } /* Blue */
+.tertiary-accent { color: #C5FF66; } /* Lime */
+
+.bg-primary { background-color: #FF4FD2; }
+.bg-secondary { background-color: #4F9CFF; }
+.bg-tertiary { background-color: #C5FF66; }
+
+/* =========================
+   Cards
+========================= */
+.card {
+  background-color: #20202A; /* Matte Grey */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  padding: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+/* Card Headings */
+.card h2 {
+  font-weight: 600;
+  color: #FF4FD2;
+}
+.card:hover h2 {
+  color: #4F9CFF;
+}
+
+/* =========================
+   Inputs / Forms
+========================= */
+input, select, textarea {
+  background-color: #20202A;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #E0E0E0;
+  padding: 0.5rem;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #4F9CFF; /* Laser Blue focus */
+  box-shadow: 0 0 6px #4F9CFF;
+  outline: none;
+}
+
+/* =========================
+   Floating Labels
+========================= */
+.floating-label {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-label label {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  color: #AAA;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 0;
+  font-size: 0.75rem;
+  color: #FF4FD2; /* Magenta */
+}
+
+/* Input Floating Version */
+.input-floating {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.input-floating input {
+  width: 100%;
+  padding: 12px 8px;
+  background: #20202A;
+  border: 1px solid #4F9CFF;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  transition: 0.3s border-color, 0.3s box-shadow;
+}
+
+.input-floating input:focus {
+  border-color: #FF4FD2;
+  box-shadow: 0 0 6px #FF4FD2;
+}
+
+.input-floating label {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  color: #aaa;
+  pointer-events: none;
+  transition: 0.3s all;
+}
+
+.input-floating input:focus + label,
+.input-floating input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  font-size: 0.8rem;
+  color: #FF4FD2;
+  background: #20202A;
+  padding: 0 4px;
+}
+
+/* =========================
+   Buttons
+========================= */
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  color: #16161C;
+}
+
+button.primary { background-color: #FF4FD2; }
+button.primary:hover { opacity: 0.9; }
+
+button.secondary { background-color: #4F9CFF; }
+button.secondary:hover { opacity: 0.9; }
+
+button.tertiary { background-color: #C5FF66; }
+button.tertiary:hover { opacity: 0.9; }
+
+/* btn-* classes for AdminPanel */
+.btn-primary { background-color: #FF4FD2; color: white; transition: 0.2s; }
+.btn-primary:hover { background-color: #e63ec6; }
+
+.btn-secondary { background-color: #4F9CFF; }
+.btn-secondary:hover { background-color: #3e86e6; }
+
+.btn-tertiary { background-color: #C5FF66; }
+.btn-tertiary:hover { background-color: #b0e85c; }
+
+/* =========================
+   Navbar
+========================= */
+.navbar {
+  background-color: #16161C;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar a {
+  color: #E0E0E0;
+  margin-right: 1.5rem;
+  position: relative;
+}
+
+.navbar a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #4F9CFF;
+  animation: glideIn 0.3s ease forwards;
+}
+
+@keyframes glideIn {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* =========================
+   Loading
+========================= */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #FF4FD2;
+}
+
+/* =========================
+   Neon Wave Animation
+========================= */
+@keyframes wave {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-wave {
+  animation: wave 20s linear infinite;
+}
+
+/* =========================
+   Toast / Alerts
+========================= */
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: #FF4FD2;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: slide-in 0.3s ease forwards;
+}
+
+.toast-success { background: #C5FF66; color: #16161C; }
+.toast-info { background: #4F9CFF; color: white; }
+
+@keyframes slide-in {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* =========================
+   BhortiJuddho Logo
+========================= */   
+.fredericka-the-great-regular {
+  font-family: "Fredericka the Great", serif;
+  font-weight: 400;
+  font-style: normal;
+}
