@@ -65,6 +65,7 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { generateStudentSummaryPDF } from '../../utils/pdfGenerator';
+import AICounselor from '../../components/AICounselor/AICounselor';
 
 
 // Animations
@@ -314,6 +315,9 @@ const Dashboard = () => {
     const [isChecklistOpen, setIsChecklistOpen] = useState(false);
     const [nut, setNut] = useState(""); // New Utility Text
     const [nud, setNud] = useState(""); // New Utility Date
+
+    // AI Counselor State
+    const [isAICounselorOpen, setIsAICounselorOpen] = useState(false);
 
     useEffect(() => {
         if (user?.id) {
@@ -711,6 +715,84 @@ const Dashboard = () => {
                         </Grid>
                     </Grid>
 
+                    {/* AI Counselor Button */}
+                    <Box mb={5}>
+                        <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <Paper
+                                onClick={() => setIsAICounselorOpen(true)}
+                                elevation={0}
+                                sx={{
+                                    p: 3,
+                                    cursor: 'pointer',
+                                    background: 'linear-gradient(135deg, rgba(79, 156, 255, 0.15) 0%, rgba(255, 79, 212, 0.15) 100%)',
+                                    border: '2px solid rgba(79, 156, 255, 0.3)',
+                                    borderRadius: 4,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    backdropFilter: 'blur(10px)',
+                                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    '&:hover': {
+                                        background: 'linear-gradient(135deg, rgba(79, 156, 255, 0.25) 0%, rgba(255, 79, 212, 0.25) 100%)',
+                                        border: '2px solid rgba(255, 79, 212, 0.6)',
+                                        boxShadow: '0 0 40px rgba(79, 156, 255, 0.4)',
+                                        transform: 'translateY(-4px)'
+                                    }
+                                }}
+                            >
+                                <Box sx={{ position: 'absolute', top: -30, right: -30, opacity: 0.1, transform: 'rotate(15deg)' }}>
+                                    <Typography sx={{ fontSize: 150 }}>🧠</Typography>
+                                </Box>
+
+                                <Box display="flex" alignItems="center" justifyContent="space-between">
+                                    <Box display="flex" alignItems="center" gap={3}>
+                                        <Box
+                                            sx={{
+                                                p: 2,
+                                                borderRadius: '50%',
+                                                background: 'linear-gradient(135deg, #4F9CFF 0%, #FF4FD2 100%)',
+                                                display: 'flex',
+                                                color: 'white',
+                                                boxShadow: '0 8px 20px rgba(79, 156, 255, 0.4)',
+                                                fontSize: 32
+                                            }}
+                                        >
+                                            🧠
+                                        </Box>
+                                        <Box>
+                                            <Typography variant="h5" fontWeight="bold" sx={{
+                                                background: 'linear-gradient(45deg, #4F9CFF, #FF4FD2)',
+                                                WebkitBackgroundClip: 'text',
+                                                WebkitTextFillColor: 'transparent',
+                                                mb: 0.5
+                                            }}>
+                                                AI Admission Counselor
+                                            </Typography>
+                                            <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                                                Get instant advice, emotional support, and personalized recommendations
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            px: 3,
+                                            py: 1.5,
+                                            borderRadius: 3,
+                                            background: 'linear-gradient(135deg, #4F9CFF, #FF4FD2)',
+                                            color: 'white',
+                                            fontWeight: 'bold',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                            boxShadow: '0 4px 12px rgba(79, 156, 255, 0.3)'
+                                        }}
+                                    >
+                                        Ask Now <ArrowForward />
+                                    </Box>
+                                </Box>
+                            </Paper>
+                        </motion.div>
+                    </Box>
+
                     {/* Quick Actions */}
                     <Box mb={5}>
                         <Typography variant="h6" fontWeight="bold" color="white" mb={2} pl={1} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -1014,6 +1096,17 @@ const Dashboard = () => {
                     <Button onClick={() => setIsChecklistOpen(false)}>Close</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* AI Counselor Modal */}
+            <AICounselor
+                isOpen={isAICounselorOpen}
+                onClose={() => setIsAICounselorOpen(false)}
+                userContext={{
+                    profile: profile,
+                    applications: applicationsCount,
+                    documents: documentsCount
+                }}
+            />
         </Box>
     );
 };
