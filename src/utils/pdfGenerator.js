@@ -201,3 +201,4 @@ export const generateStudentSummaryPDF = async (userData) => {
   const fileName = `${profile?.full_name || 'Student'}_Profile_${new Date().toISOString().split('T')[0]}.pdf`;
   doc.save(fileName);
 };
+
