@@ -65,6 +65,9 @@ export default function UniversityBrowse() {
     const [eligibilityResult, setEligibilityResult] = useState(null);
     const [admissionDate, setAdmissionDate] = useState('');
 
+    // Search state
+    const [searchQuery, setSearchQuery] = useState('');
+
     const handleLogout = async () => {
         await logout();
         navigate('/');
@@ -298,6 +301,69 @@ export default function UniversityBrowse() {
                     </Typography>
                 </motion.div>
 
+                {/* Search Bar */}
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <Box mb={4}>
+                        <TextField
+                            fullWidth
+                            placeholder="Search universities or programs (e.g., BUET, CSE, Engineering)..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    background: 'rgba(30, 30, 37, 0.95)',
+                                    borderRadius: 3,
+                                    border: '2px solid rgba(79, 156, 255, 0.2)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        borderColor: 'rgba(79, 156, 255, 0.4)',
+                                    },
+                                    '&.Mui-focused': {
+                                        borderColor: '#4F9CFF',
+                                        boxShadow: '0 0 20px rgba(79, 156, 255, 0.3)',
+                                    },
+                                    '& fieldset': {
+                                        border: 'none',
+                                    },
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                    color: 'white',
+                                    fontSize: '1rem',
+                                    padding: '16px 20px',
+                                    '&::placeholder': {
+                                        color: 'rgba(255, 255, 255, 0.5)',
+                                        opacity: 1,
+                                    },
+                                },
+                            }}
+                        />
+                        {searchQuery && (
+                            <Box mt={1} display="flex" alignItems="center" gap={1}>
+                                <Typography variant="caption" color="text.secondary">
+                                    Showing results for: <span style={{ color: '#4F9CFF', fontWeight: 'bold' }}>"{searchQuery}"</span>
+                                </Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => setSearchQuery('')}
+                                    sx={{
+                                        minWidth: 'auto',
+                                        padding: '2px 8px',
+                                        color: '#FF4FD2',
+                                        fontSize: '0.7rem',
+                                        '&:hover': { bgcolor: 'rgba(255, 79, 210, 0.1)' }
+                                    }}
+                                >
+                                    Clear
+                                </Button>
+                            </Box>
+                        )}
+                    </Box>
+                </motion.div>
+
                 {/* University Programs Grid */}
                 {programs.length === 0 ? (
                     <Paper
@@ -315,110 +381,177 @@ export default function UniversityBrowse() {
                     </Paper>
                 ) : (
                     <Grid container spacing={3}>
-                        {programs.map((program, index) => (
-                            <Grid item xs={12} md={6} lg={4} key={program.id}>
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                >
-                                    <Card
+                        {programs
+                            .filter(program => {
+                                if (!searchQuery.trim()) return true;
+
+                                const query = searchQuery.toLowerCase();
+                                const programName = (program.name || '').toLowerCase();
+                                const universityName = (program.university?.name || '').toLowerCase();
+                                const duration = (program.duration || '').toLowerCase();
+                                const intakeTerm = (program.intake_term || '').toLowerCase();
+
+                                return (
+                                    programName.includes(query) ||
+                                    universityName.includes(query) ||
+                                    duration.includes(query) ||
+                                    intakeTerm.includes(query)
+                                );
+                            })
+                            .map((program, index) => (
+                                <Grid item xs={12} md={6} lg={4} key={program.id}>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: index * 0.1 }}
+                                    >
+                                        <Card
+                                            sx={{
+                                                background: 'rgba(30, 30, 37, 0.95)',
+                                                borderRadius: 3,
+                                                height: '100%',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                border: '1px solid rgba(79, 156, 255, 0.2)',
+                                                '&:hover': {
+                                                    transform: 'translateY(-4px)',
+                                                    transition: 'transform 0.3s ease',
+                                                    borderColor: '#4F9CFF'
+                                                }
+                                            }}
+                                        >
+                                            <CardContent sx={{ flexGrow: 1 }}>
+                                                <Box display="flex" alignItems="center" mb={2}>
+                                                    <School sx={{ color: '#4F9CFF', fontSize: 40, mr: 2 }} />
+                                                    <Box>
+                                                        <Typography variant="h6" fontWeight="bold" color="white">
+                                                            {program.name}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            {program.university?.name}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)', my: 2 }} />
+
+                                                {/* Requirements */}
+                                                <Box mb={2}>
+                                                    <Typography variant="caption" color="text.secondary" display="block" mb={1}>
+                                                        Requirements (BD System):
+                                                    </Typography>
+                                                    <Box display="flex" gap={1} flexWrap="wrap">
+                                                        <Chip
+                                                            label={`SSC: ${program.min_ssc_gpa || 'N/A'}`}
+                                                            size="small"
+                                                            sx={{ bgcolor: 'rgba(79, 156, 255, 0.2)', color: 'white' }}
+                                                        />
+                                                        <Chip
+                                                            label={`HSC: ${program.min_hsc_gpa || 'N/A'}`}
+                                                            size="small"
+                                                            sx={{ bgcolor: 'rgba(79, 156, 255, 0.2)', color: 'white' }}
+                                                        />
+                                                    </Box>
+                                                </Box>
+
+                                                {/* Program Details */}
+                                                <Box display="flex" flexDirection="column" gap={1}>
+                                                    {program.duration && (
+                                                        <Box display="flex" alignItems="center" gap={1}>
+                                                            <Schedule sx={{ fontSize: 16, color: 'text.secondary' }} />
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {program.duration}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+                                                    {program.tuition_fee && (
+                                                        <Box display="flex" alignItems="center" gap={1}>
+                                                            <AttachMoney sx={{ fontSize: 16, color: 'text.secondary' }} />
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {program.tuition_fee}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+                                                    {program.intake_term && (
+                                                        <Box display="flex" alignItems="center" gap={1}>
+                                                            <CalendarToday sx={{ fontSize: 16, color: 'text.secondary' }} />
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {program.intake_term}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+                                                </Box>
+                                            </CardContent>
+
+                                            <CardActions sx={{ p: 2, pt: 0 }}>
+                                                <Button
+                                                    fullWidth
+                                                    variant="contained"
+                                                    onClick={() => openEligibilityChecker(program)}
+                                                    sx={{
+                                                        background: 'linear-gradient(45deg, #00E676, #00C853)',
+                                                        '&:hover': {
+                                                            background: 'linear-gradient(45deg, #00C853, #00A843)'
+                                                        }
+                                                    }}
+                                                >
+                                                    Check Eligibility
+                                                </Button>
+                                            </CardActions>
+                                        </Card>
+                                    </motion.div>
+                                </Grid>
+                            ))}
+
+                        {/* No Results Message */}
+                        {programs.filter(program => {
+                            if (!searchQuery.trim()) return true;
+                            const query = searchQuery.toLowerCase();
+                            const programName = (program.name || '').toLowerCase();
+                            const universityName = (program.university?.name || '').toLowerCase();
+                            const duration = (program.duration || '').toLowerCase();
+                            const intakeTerm = (program.intake_term || '').toLowerCase();
+                            return (
+                                programName.includes(query) ||
+                                universityName.includes(query) ||
+                                duration.includes(query) ||
+                                intakeTerm.includes(query)
+                            );
+                        }).length === 0 && searchQuery.trim() && (
+                                <Grid item xs={12}>
+                                    <Paper
                                         sx={{
+                                            p: 6,
+                                            textAlign: 'center',
                                             background: 'rgba(30, 30, 37, 0.95)',
                                             borderRadius: 3,
-                                            height: '100%',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            border: '1px solid rgba(79, 156, 255, 0.2)',
-                                            '&:hover': {
-                                                transform: 'translateY(-4px)',
-                                                transition: 'transform 0.3s ease',
-                                                borderColor: '#4F9CFF'
-                                            }
+                                            border: '1px solid rgba(255, 79, 210, 0.2)'
                                         }}
                                     >
-                                        <CardContent sx={{ flexGrow: 1 }}>
-                                            <Box display="flex" alignItems="center" mb={2}>
-                                                <School sx={{ color: '#4F9CFF', fontSize: 40, mr: 2 }} />
-                                                <Box>
-                                                    <Typography variant="h6" fontWeight="bold" color="white">
-                                                        {program.name}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        {program.university?.name}
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-
-                                            <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)', my: 2 }} />
-
-                                            {/* Requirements */}
-                                            <Box mb={2}>
-                                                <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-                                                    Requirements (BD System):
-                                                </Typography>
-                                                <Box display="flex" gap={1} flexWrap="wrap">
-                                                    <Chip
-                                                        label={`SSC: ${program.min_ssc_gpa || 'N/A'}`}
-                                                        size="small"
-                                                        sx={{ bgcolor: 'rgba(79, 156, 255, 0.2)', color: 'white' }}
-                                                    />
-                                                    <Chip
-                                                        label={`HSC: ${program.min_hsc_gpa || 'N/A'}`}
-                                                        size="small"
-                                                        sx={{ bgcolor: 'rgba(79, 156, 255, 0.2)', color: 'white' }}
-                                                    />
-                                                </Box>
-                                            </Box>
-
-                                            {/* Program Details */}
-                                            <Box display="flex" flexDirection="column" gap={1}>
-                                                {program.duration && (
-                                                    <Box display="flex" alignItems="center" gap={1}>
-                                                        <Schedule sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {program.duration}
-                                                        </Typography>
-                                                    </Box>
-                                                )}
-                                                {program.tuition_fee && (
-                                                    <Box display="flex" alignItems="center" gap={1}>
-                                                        <AttachMoney sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {program.tuition_fee}
-                                                        </Typography>
-                                                    </Box>
-                                                )}
-                                                {program.intake_term && (
-                                                    <Box display="flex" alignItems="center" gap={1}>
-                                                        <CalendarToday sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {program.intake_term}
-                                                        </Typography>
-                                                    </Box>
-                                                )}
-                                            </Box>
-                                        </CardContent>
-
-                                        <CardActions sx={{ p: 2, pt: 0 }}>
-                                            <Button
-                                                fullWidth
-                                                variant="contained"
-                                                onClick={() => openEligibilityChecker(program)}
-                                                sx={{
-                                                    background: 'linear-gradient(45deg, #00E676, #00C853)',
-                                                    '&:hover': {
-                                                        background: 'linear-gradient(45deg, #00C853, #00A843)'
-                                                    }
-                                                }}
-                                            >
-                                                Check Eligibility
-                                            </Button>
-                                        </CardActions>
-                                    </Card>
-                                </motion.div>
-                            </Grid>
-                        ))}
+                                        <School sx={{ fontSize: 64, color: '#FF4FD2', mb: 2, opacity: 0.5 }} />
+                                        <Typography variant="h6" color="white" mb={1}>
+                                            No results found for "{searchQuery}"
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary" mb={3}>
+                                            Try searching with different keywords like university names (BUET, DU) or programs (CSE, Engineering)
+                                        </Typography>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={() => setSearchQuery('')}
+                                            sx={{
+                                                borderColor: '#4F9CFF',
+                                                color: '#4F9CFF',
+                                                '&:hover': {
+                                                    borderColor: '#4F9CFF',
+                                                    bgcolor: 'rgba(79, 156, 255, 0.1)'
+                                                }
+                                            }}
+                                        >
+                                            Clear Search
+                                        </Button>
+                                    </Paper>
+                                </Grid>
+                            )}
                     </Grid>
                 )}
 
