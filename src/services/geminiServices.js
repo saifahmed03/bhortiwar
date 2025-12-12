@@ -1,6 +1,7 @@
 // AI Counselor Service for BhortiJuddho
 // Hybrid system: Tries Gemini API first, falls back to intelligent rule-based responses
 
+
 const GEMINI_API_KEY = 'AIzaSyDCqJMlGDQXoQONLqQGVDXwL8qxQHmIVzQ';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 const USE_FALLBACK = true; // Set to true to use rule-based AI (no API needed)
