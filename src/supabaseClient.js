@@ -14,3 +14,4 @@ if (!supabaseAnonKey || supabaseAnonKey === 'placeholder-key') {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
