@@ -774,3 +774,4 @@ export default function UniversityBrowse() {
         </Box>
     );
 }
+
