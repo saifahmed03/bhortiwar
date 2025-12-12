@@ -39,3 +39,4 @@ const AdminProtected = ({ children }) => {
 };
 
 export default AdminProtected;
+
