@@ -49,7 +49,6 @@ export const updateProgram = (id, data) => {
 export const deleteProgram = (id) => {
   return supabase.from('programs').delete().eq('id', id);
 };
-
 // ---------------------------
 // Applications Management
 // ---------------------------
