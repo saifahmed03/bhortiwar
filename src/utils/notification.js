@@ -5,3 +5,4 @@ export const showToast = (message, type = "info") => {
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 };
+
