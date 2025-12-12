@@ -24,6 +24,5 @@ const App = () => {
     </React.StrictMode>
   );
 };
-
 export default App;
 
