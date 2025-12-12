@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 const NotFound = () => {
   return (
     <div className="card" style={{ textAlign: "center", margin: "2rem auto", maxWidth: "400px" }}>
@@ -9,7 +8,6 @@ const NotFound = () => {
     </div>
   );
 };
-
 export default NotFound;
 
 
