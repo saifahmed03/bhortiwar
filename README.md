@@ -199,7 +199,9 @@ This project is licensed under the MIT License.
 
 ## 👥 Authors
 
-- Your Team Name
+• Saif Ahmed (saif.ahmed03@northsouth.edu)
+•Syed Mohaiminul Islam (mohaiminul.islam.232@northsouth.edu)
+•Israt Jahan Sanjana (israt.sanjana@northsouth.edu)
 
 ## 🙏 Acknowledgments
 
